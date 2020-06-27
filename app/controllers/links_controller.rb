@@ -1,7 +1,7 @@
 class LinksController < ApplicationController
   before_action :set_link, only: [:show, :edit, :update, :destroy]
+  before_action :authorized_user, only: [:edit, :update, :destroy]
   before_action :authenticate_user!, except: [:index, :show]
-
   # GET /links
   # GET /links.json
   def index
@@ -70,7 +70,7 @@ class LinksController < ApplicationController
 
   def downvote
     @link = Link.find(params[:id])
-    @link.downvote_by current_user
+    @link.downvote_from current_user
     redirect_to fallback_location: root_path
   end
 
