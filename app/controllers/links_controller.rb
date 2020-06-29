@@ -1,7 +1,7 @@
 class LinksController < ApplicationController
   before_action :set_link, only: [:show, :edit, :update, :destroy]
-  before_action :authorized_user, only: [:edit, :update, :destroy]
   before_action :authenticate_user!, except: [:index, :show]
+  before_action :authorized_user, only: [:edit, :update, :destroy]
   # GET /links
   # GET /links.json
   def index
@@ -65,13 +65,13 @@ class LinksController < ApplicationController
   def upvote
     @link = Link.find(params[:id])
     @link.upvote_by current_user
-    redirect_to fallback_location: root_path
+    redirect_back(fallback_location: root_path)
   end
 
   def downvote
     @link = Link.find(params[:id])
     @link.downvote_from current_user
-    redirect_to fallback_location: root_path
+    redirect_back(fallback_location: root_path)
   end
 
   private
@@ -79,6 +79,12 @@ class LinksController < ApplicationController
     def set_link
       @link = Link.find(params[:id])
     end
+
+    def authorized_user
+      @link = current_user.links.find_by(id: params[:id])
+      redirect_to links_path, notice: "Not authorized to edit this link" if @link.nil?
+    end
+
 
     # Only allow a list of trusted parameters through.
     def link_params
