@@ -35,6 +35,12 @@ gem 'bootstrap-sass', '~> 3.4', '>= 3.4.1'
 
 gem 'acts_as_votable', '~> 0.10.0'
 
+gem 'simple_form'
+# gem 'actionpack', '~> 6.0', '>= 6.0.3.2'
+
+gem 'record_tag_helper'
+
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
