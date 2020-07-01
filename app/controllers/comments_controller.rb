@@ -1,7 +1,11 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
- 
+
+  def index 
+    @comments = Comment.all
+  end
+
   def create
     @link = Link.find(params[:link_id])
     @comment = @link.comments.new(comment_params)
@@ -24,10 +28,11 @@ class CommentsController < ApplicationController
   # DELETE /comments/1.json
   def destroy
     @comment.destroy
-    respond_to do |format|
-      format.html { redirect_to comments_url, notice: 'Comment was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_back(fallback_location: root_path)
+    # respond_to do |format|
+    #   format.html { redirect_to comments_url, notice: 'Comment was successfully destroyed.' }
+    #   format.json { head :no_content }
+    # end
   end
 
   private
